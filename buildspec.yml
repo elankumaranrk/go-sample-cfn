@@ -1,0 +1,32 @@
+version: 0.2
+
+env:
+  variables:
+     S3_BUCKET: "elankumaran-249"
+
+phases:
+  install:
+    runtime-versions:
+      golang: 1.12
+    commands:
+      - echo Building the Go code...
+      - cd $CODEBUILD_SRC_DIR/src
+      - go mod download
+  build:
+    commands:
+      - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o app
+  post_build:
+    commands:
+       - echo Build Completed...
+       - zip -Djr deploy.zip app
+       - aws s3 cp deploy.zip s3://${S3_BUCKET}/samples/golamda.zip
+#artifacts:
+  #files:
+    # - location
+    # - location
+  #name: $(date +%Y-%m-%d)
+  #discard-paths: yes
+  #base-directory: location
+#cache:
+  #paths:
+    # - paths
