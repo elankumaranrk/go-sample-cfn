@@ -2,6 +2,7 @@ version: 0.2
 
 env:
   variables:
+     GO111MODULE: "on"
      S3_BUCKET: "elankumaran-249"
 
 phases:
